@@ -3,6 +3,7 @@
 
     int i = 0;
 }
+
 <div class="row">
     <div class="col-md-12">
         <table class="table table-bordered table-hover">
@@ -17,9 +18,10 @@
             {
 
                 i += 1;
+                var ClassName = item.Type == "收入" ? "label-primary" : "label-danger";
                 <tr>
                     <td>@i</td>
-                    <td>@item.Type</td>
+                    <td class="@ClassName">@item.Type</td>
                     <td>@item.Time</td>
                     <td>@item.Money</td>
                 </tr>
@@ -27,7 +29,6 @@
         </table>
     </div>
 </div>
-
 
 
 

@@ -9,29 +9,37 @@ namespace homework.Controllers
 {
     public class HomeController : Controller
     {
+        Show db = new Show();
+        public ActionResult aaa()
+        {
+            return View();
+        }
         public ActionResult Index()
         {
             //Random rnd = new Random();
-            var model = new List<MyClass>();
-            var DB = new Show();
-            var Data = DB.AccountBook.ToList();
-            foreach (var Item in Data)
-            {
-                MyClass x = new MyClass()
-                {
-                    Money = Item.Amounttt,
-                    Time = Item.Dateee
-                }; 
-               if(Item.Categoryyy==0)
-                {
-                    x.Type = "收入";
-                }
-                else
-                {
-                    x.Type = "支出"; 
-                }
-                model.Add(x);
-            }
+            //var model = new List<MyClass>();
+
+            //var Data = db.AccountBook.ToList();
+            //foreach (var Item in Data)
+            //{
+            //    MyClass x = new MyClass()
+            //    {
+            //        Money = Item.Amounttt,
+            //        Time = Item.Dateee
+            //    };
+            //    if (Item.Categoryyy == 0)
+            //    {
+            //        x.Type = "收入";
+            //    }
+            //    else
+            //    {
+            //        x.Type = "支出";
+            //    }
+            //    model.Add(x);
+            //}
+
+            return View();
+            
             //MyClass note;
             //for (int i = 0; i < 200; i++)
             //{
@@ -56,9 +64,59 @@ namespace homework.Controllers
             //    Time= DateTime.Now,
             //    Money = 500
             //};
+        }
+        //[HttpPost]
+        //public ActionResult Index(MyClass Data)
+        //{
+        //    Show DB = new Show();
+        //    AccountBook table = new AccountBook()
+        //    {
+        //        Amounttt = Data.Money,
+        //        Categoryyy = Data.Type == "收入" ? 0 : 1,
+        //        Dateee = Data.Time
+        //    };
+        //    DB.AccountBook.Add(table);
+        //    DB.SaveChanges();
+        //    return View(Data);
+        //}
+        public ActionResult ChildAction()
+        {
+            var model = new List<MyClass>();
+
+            var Data = db.AccountBook.ToList();
+            foreach (var Item in Data)
+            {
+                MyClass x = new MyClass()
+                {
+                    Money = Item.Amounttt,
+                    Time = Item.Dateee
+                };
+                if (Item.Categoryyy == 0)
+                {
+                    x.Type = "收入";
+                }
+                else
+                {
+                    x.Type = "支出";
+                }
+                model.Add(x);
+            }
+
             return View(model);
         }
-
+        
+        [HttpPost]
+        public ActionResult Index(AccountBook data)
+        {
+            if (ModelState.IsValid)
+            {
+                data.Id = Guid.NewGuid();
+                db.AccountBook.Add(data);
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(data);
+        }
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
